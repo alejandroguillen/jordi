@@ -9,9 +9,9 @@
 using namespace std;
 /*
  * USAGE:
- * testbed-v2 sink			USBTelosB	localhost	port					SINK MODE
- * testbed-v2 camera		USBTelosB	address		port	cameraID		CAMERA MODE, LISTENING ON PORT port FOR COOP.
- * testbed-v2 cooperator	aaa			address 	port   					COOP MPDE, CONNECTING TO address:port
+ * jordi	sink		USBTelosB	localhost	port					SINK MODE
+ * jordi	camera		USBTelosB	address		port	cameraID		CAMERA MODE, LISTENING ON PORT port FOR COOP.
+ * jordi	cooperator	aaa			address 	port   					COOP MPDE, CONNECTING TO address:port
  */
 
 int main(int argc, char ** argv){
@@ -81,7 +81,7 @@ int main(int argc, char ** argv){
 		taskMng->start();
 
 		//start a telosb receiver
-		radioSys->startTelosbReceiver(argv[2]);
+		radioSys->startTelosbReceiver(argv[2], argv[5]);
 
 		//start the WiFi manager
 		radioSys->startWiFiReceiver();

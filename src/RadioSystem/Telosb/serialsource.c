@@ -274,7 +274,7 @@ static int serial_read(serial_source src, int non_blocking, void *buffer, int n)
 
 serial_source open_serial_source(const char *device, int baud_rate,
 				 int non_blocking,
-				 void (*message)(serial_source_msg problem))
+				 void (*message)(serial_source_msg problem), int camera_id)
 /* Effects: opens serial port device at specified baud_rate. If non_blocking
      is true, read_serial_packet calls will be non-blocking (writes are
      always blocking, for now at least)

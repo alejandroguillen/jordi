@@ -27,12 +27,12 @@ void stderr_msg(serial_source_msg problem)
 }
 
 
-int TelosbRadioSystem::openRadio(const char *serial_device, int baud_rate, int non_blocking){
+int TelosbRadioSystem::openRadio(const char *serial_device, int baud_rate, int non_blocking, int camera_id){
 	//packet = NULL;
 	//dealloc_packet = false;
 	//serial_source src;
 
-	telosb = open_serial_source(serial_device, baud_rate, non_blocking, stderr_msg);
+	telosb = open_serial_source(serial_device, baud_rate, non_blocking, stderr_msg, camera_id);
 
 	//RADIO_packetID = 0xFF;
 
