@@ -17,6 +17,7 @@ class OffloadingManager;
 typedef struct CTA_param{
 	int quality_factor;
 	int num_slices;
+	int camera_id; //ALEXIS
 	//.... other params such as num slices (w and h?)
 } CTA_param_t;
 

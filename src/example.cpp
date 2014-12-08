@@ -9,9 +9,9 @@
 using namespace std;
 /*
  * USAGE:
- * testbed-v2 sink 						SINK MODE
- * testbed-v2 camera port 				CAMERA MODE, LISTENING ON PORT port FOR COOP.
- * testbed-v2 cooperator address port   COOP MPDE, CONNECTING TO address:port
+ * testbed-v2 sink			USBTelosB	localhost	port					SINK MODE
+ * testbed-v2 camera		USBTelosB	address		port	cameraID		CAMERA MODE, LISTENING ON PORT port FOR COOP.
+ * testbed-v2 cooperator	aaa			address 	port   					COOP MPDE, CONNECTING TO address:port
  */
 
 int main(int argc, char ** argv){

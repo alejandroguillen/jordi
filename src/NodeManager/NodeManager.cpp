@@ -97,6 +97,8 @@ void NodeManager::notify_msg(Message *msg){
 			//update system state and start cta processing
 			cta_param.quality_factor = ((StartCTAMsg*)msg)->getQualityFactor();
 			cta_param.num_slices = ((StartCTAMsg*)msg)->getNumSlices();
+			//ALEXIS parameter to get camera_id
+			cta_param.camera_id = msg->getDestination();
 
 			//m_thread = boost::thread(&NodeManager::CTA_processing_thread, this);
 
@@ -404,8 +406,10 @@ void NodeManager::CTA_processing_thread(){
 		top_left.xCoordinate = 0;
 		top_left.yCoordinate = (480/cta_param.num_slices)*i;
 		DataCTAMsg *msg = new DataCTAMsg(frame_id,i,top_left,slice_bitstream.size(),enc_time,0,slice_bitstream);
-
-		msg->setSource(1);
+		
+		//ALEXIS Source from camera
+		msg->setSource(cta_param.camera_id);
+		
 		msg->setDestination(0);
 		sendMessage(msg);
 		cur_state = IDLE;
