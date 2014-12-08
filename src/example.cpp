@@ -52,7 +52,7 @@ int main(int argc, char ** argv){
 		taskMng->start();
 
 		//start a telosb receiver
-		radioSys->startTelosbReceiver(argv[2]);
+		radioSys->startTelosbReceiver(argv[2], argv[5]);
 
 		//start the sink2gui interface
 		tcp::resolver resolver(io_service);

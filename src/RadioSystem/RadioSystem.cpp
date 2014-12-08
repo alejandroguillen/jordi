@@ -9,7 +9,7 @@ using namespace std;
 
 
 
-RadioSystem::RadioSystem(NodeManager* nm, MessageParser* m, string ip_address, string port, int cameraID){
+RadioSystem::RadioSystem(NodeManager* nm, MessageParser* m, string ip_address, string port){
 	nodeManager_ptr = nm;
 	msg_parser = m;
 	incoming_message_queue_ptr = new IncomingMessageQueue(this,msg_parser);
@@ -18,13 +18,13 @@ RadioSystem::RadioSystem(NodeManager* nm, MessageParser* m, string ip_address, s
 	switch(node_type){
 	case SINK:
 	{
-		telosbRadioSystem_ptr = new TelosbRadioSystem(cameraID);
+		telosbRadioSystem_ptr = new TelosbRadioSystem();
 		telosbRadioSystem_ptr->setIncomingMessageQueue(incoming_message_queue_ptr);
 		break;
 	}
 	case CAMERA:
 	{
-		telosbRadioSystem_ptr = new TelosbRadioSystem(cameraID);
+		telosbRadioSystem_ptr = new TelosbRadioSystem();
 		telosbRadioSystem_ptr->setIncomingMessageQueue(incoming_message_queue_ptr);
 
 		tcp::resolver::query query(ip_address, port);
@@ -46,10 +46,12 @@ void RadioSystem::startWiFiReceiver(){
 	wifiRadioSystem_ptr->startReceiver();
 }
 
-int RadioSystem::startTelosbReceiver(string dev_name, int camera_id){
-	if(telosbRadioSystem_ptr->openRadio(dev_name.c_str(),115200,0, camera_id)==0){
+int RadioSystem::startTelosbReceiver(string dev_name, string camera_id){
+	telosbRadioSystem_ptr->setCameraID(atoi(camera_id.c_str()));
+	if(telosbRadioSystem_ptr->openRadio(dev_name.c_str(),115200,0)==0){
 		telosbRadioSystem_ptr->startReceiver();
 		cout << "RS: telosb ready!" << endl;
+		cout << "RS: camera " << telosbRadioSystem_ptr->getCameraID() << endl;
 		return 0;
 	}
 	cout << "RS: Error in opening radio device" << endl;

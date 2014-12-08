@@ -27,12 +27,12 @@ void stderr_msg(serial_source_msg problem)
 }
 
 
-int TelosbRadioSystem::openRadio(const char *serial_device, int baud_rate, int non_blocking, int camera_id){
+int TelosbRadioSystem::openRadio(const char *serial_device, int baud_rate, int non_blocking){
 	//packet = NULL;
 	//dealloc_packet = false;
 	//serial_source src;
 
-	telosb = open_serial_source(serial_device, baud_rate, non_blocking, stderr_msg, camera_id);
+	telosb = open_serial_source(serial_device, baud_rate, non_blocking, stderr_msg);
 
 	//RADIO_packetID = 0xFF;
 
@@ -43,8 +43,10 @@ int TelosbRadioSystem::openRadio(const char *serial_device, int baud_rate, int n
 
 }
 
+
 void TelosbRadioSystem::receiverThread(){
 	int len;
+	int camera_id = TelosbRadioSystem::getCameraID();
 	uchar* packet = NULL;
 	char buf[1024];
 	asn_dec_rval_t rval;
@@ -57,21 +59,24 @@ void TelosbRadioSystem::receiverThread(){
 
 		int src_addr = packet[8]*256+packet[9];
 		int dst_addr = packet[10]*256+packet[11];
-		MessageType message_type = static_cast<MessageType>(packet[17]);
-		int seq_num = static_cast<int>(packet[12]);
-		int num_packets = *(unsigned short*)&packet[13];
-		int packet_id = *(unsigned short*)&packet[15];
+		
+		if(camera_id == dst_addr || camera_id == 0){ //ALEXIS filter
+			MessageType message_type = static_cast<MessageType>(packet[17]);
+			int seq_num = static_cast<int>(packet[12]);
+			int num_packets = *(unsigned short*)&packet[13];
+			int packet_id = *(unsigned short*)&packet[15];
 
-		int bitstream_size = (int)packet[5] - 10;
+			int bitstream_size = (int)packet[5] - 10;
 
-		//copy the bitstream
-		vector<char> bitstream;
-		for(int i=0;i<bitstream_size;i++){
-			bitstream.push_back(packet[18+i]);
+			//copy the bitstream
+			vector<char> bitstream;
+			for(int i=0;i<bitstream_size;i++){
+				bitstream.push_back(packet[18+i]);
+			}
+
+			incoming_message_queue_ptr->addPacketToQueue(src_addr, dst_addr,message_type,seq_num,num_packets,packet_id,bitstream);
 		}
-
-		incoming_message_queue_ptr->addPacketToQueue(src_addr, dst_addr,message_type,seq_num,num_packets,packet_id,bitstream);
-
+		
 		if(packet!=NULL){
 			free(packet);
 			packet = NULL;
