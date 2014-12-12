@@ -13,16 +13,17 @@ using namespace std;
 //todo: deadline timer for keeping the system active even if the start/stop message is not received
 
 
-NodeManager::NodeManager(NodeType nt){
+NodeManager::NodeManager(NodeType nt, string ID){
 	node_type = nt;
-
+	node_id = atoi(ID.c_str()); //ALEXIS
+	
 	switch(node_type){
 	case SINK:{
 		break;
 	}
 	case CAMERA:{
 		imgAcq = new ImageAcquisition(0);
-//		imgAcq = new ImageAcquisition(0,1024,768);
+		//imgAcq = new ImageAcquisition(0,1024,768);
 
 		BRISK_detParams detPrms(60,4);
 		BRISK_descParams dscPrms;
@@ -98,7 +99,7 @@ void NodeManager::notify_msg(Message *msg){
 			cta_param.quality_factor = ((StartCTAMsg*)msg)->getQualityFactor();
 			cta_param.num_slices = ((StartCTAMsg*)msg)->getNumSlices();
 			//ALEXIS parameter to get camera_id
-			cta_param.camera_id = msg->getDestination();
+			//camera_id = msg->getDestination();
 
 			//m_thread = boost::thread(&NodeManager::CTA_processing_thread, this);
 
@@ -143,6 +144,9 @@ void NodeManager::notify_msg(Message *msg){
 			atc_param.transmit_scale = ((StartATCMsg*)msg)->getTransferScale();
 
 			atc_param.num_feat_per_block = ((StartATCMsg*)msg)->getNumFeatPerBlock();
+			
+			//ALEXIS parameter to get camera_id
+			//camera_id = msg->getDestination();
 
 			//if camera, start ATC processing with ATC params
 			//m_thread = boost::thread(&NodeManager::ATC_processing_thread, this);
@@ -185,6 +189,9 @@ void NodeManager::notify_msg(Message *msg){
 
 			datc_param.num_feat_per_block = ((StartDATCMsg*)msg)->getNumFeatPerBlock();
 			datc_param.num_cooperators = ((StartDATCMsg*)msg)->getNumCooperators();
+			
+			//NOALEXIS parameter to get camera_id
+			//camera_id = msg->getDestination();
 
 			int num_available_coop = offloading_manager->getNumAvailableCoop();
 			if(cur_state==IDLE && num_available_coop >= ((StartDATCMsg*)msg)->getNumCooperators()){
@@ -408,7 +415,7 @@ void NodeManager::CTA_processing_thread(){
 		DataCTAMsg *msg = new DataCTAMsg(frame_id,i,top_left,slice_bitstream.size(),enc_time,0,slice_bitstream);
 		
 		//ALEXIS Source from camera
-		msg->setSource(cta_param.camera_id);
+		msg->setSource(node_id);
 		
 		msg->setDestination(0);
 		sendMessage(msg);
@@ -540,7 +547,10 @@ void NodeManager::ATC_processing_thread(){
 
 
 			DataATCMsg *msg = new DataATCMsg(frame_id, i, num_blocks, detTime, descTime, kencTime, fencTime, 0, features_sub.rows, sub_kpts.size(), block_ft_bitstream, block_kp_bitstream);
-			msg->setSource(1);
+			
+			//ALEXIS Source from camera
+			msg->setSource(node_id);
+			
 			msg->setDestination(0);
 
 			sendMessage(msg);
@@ -647,7 +657,7 @@ void NodeManager::DATC_processing_thread(){
 	Mat features = ((ExtractFeaturesTask*)cur_task)->getFeatures();
 	kpts = ((ExtractFeaturesTask*)cur_task)->getKeypoints();
 	double descTime =  ((ExtractFeaturesTask*)cur_task)->getDescTime();
-	cout << "now extracted " << (int)kpts.size() << "keypoints" << endl;
+	cout << "now extracted " << (int)kpts.size() << " keypoints" << endl;
 	delete((ExtractFeaturesTask*)cur_task);
 
 	//put the unencoded features somewhere...
@@ -681,11 +691,16 @@ void NodeManager::DATC_processing_thread_cooperator(DataCTAMsg* msg){
 
 
 	//send ACK_SLICE_MESSAGE
+	cout << "Sending ACK_SLICE_MESSAGE" << endl;
 	ACKsliceMsg *ackslice_msg = new ACKsliceMsg(frame_id);
 	std::set<Connection*> connections1 = radioSystem_ptr->getWiFiConnections();
 	std::set<Connection*>::iterator it1 = connections1.begin();
 	Connection* cn1 = *it1;
 	ackslice_msg->setTcpConnection(cn1);
+	//ALEXIS
+	ackslice_msg->setSource(msg->getDestination());
+	ackslice_msg->setDestination(msg->getSource());
+	//
 	cur_task = new SendWiFiMessageTask(ackslice_msg);
 	taskManager_ptr->addTask(cur_task);
 	cout << "NM: Waiting the end of the send_wifi_message_task" << endl;
@@ -761,6 +776,10 @@ cerr << "extracted " << (int)kpts.size() << "keypoints\tDetThreshold=" << datc_p
 	std::set<Connection*>::iterator it = connections.begin();
 	Connection* cn = *it;
 	atc_msg->setTcpConnection(cn);
+	//ALEXIS
+	atc_msg->setSource(msg->getDestination());
+	atc_msg->setDestination(msg->getSource());
+	//
 	cur_task = new SendWiFiMessageTask(atc_msg);
 	taskManager_ptr->addTask(cur_task);
 	cout << "NM: Waiting the end of the send_wifi_message_task" << endl;
@@ -836,8 +855,14 @@ void NodeManager::notifyCooperatorOnline(Connection* cn){
 	std::string ip_addr = cn->socket().remote_endpoint().address().to_string();
 	int port = cn->socket().remote_endpoint().port();
 	CoopInfoMsg *msg = new CoopInfoMsg(ip_addr,port,CoopStatus_online);
-	msg->setSource(1);
-	msg->setDestination(0);
+	
+	//ALEXIS 11/12 not sure to work, the notifyCooperatorOnline don't need a source to be sent
+	msg->setSource(node_id);
+	if(node_id>2)
+		msg->setDestination(msg->getSource());
+	else
+		msg->setDestination(0);
+	//
 	sendMessage(msg);
 }
 
@@ -846,8 +871,14 @@ void NodeManager::notifyCooperatorOffline(Connection* cn){
 	std::string ip_addr = cn->socket().remote_endpoint().address().to_string();
 	int port = cn->socket().remote_endpoint().port();
 	CoopInfoMsg *msg = new CoopInfoMsg(ip_addr,port,CoopStatus_offline);
-	msg->setSource(1);
-	msg->setDestination(0);
+	
+	//ALEXIS 11/12 not sure to work, the notifyCooperatorOffline don't need a source to be sent
+	msg->setSource(node_id);
+	if(node_id>2)
+		msg->setDestination(msg->getSource());
+	else
+		msg->setDestination(0);
+	//
 	sendMessage(msg);
 }
 
@@ -916,7 +947,9 @@ void NodeManager::notifyOffloadingCompleted(vector<KeyPoint>& kpts,Mat& features
 
 			//TODO: understand what to do with encoding times...
 			DataATCMsg *msg = new DataATCMsg(frame_id, i, num_blocks, camDetTime, camDescTime, 0, 0, 0, features_sub.rows, sub_kpts.size(), block_ft_bitstream, block_kp_bitstream);
-			msg->setSource(1);
+			
+			msg->setSource(node_id);//ALEXIS
+			
 			msg->setDestination(0);
 
 			sendMessage(msg);

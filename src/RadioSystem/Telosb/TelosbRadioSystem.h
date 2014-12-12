@@ -56,16 +56,16 @@ public:
 	serial_source getTelosb();
 	void setIncomingMessageQueue(IncomingMessageQueue* incoming_message_queue);
 
-	void setCameraID(int cid){ //ALEXIS
-		camera_id = cid;
+	void setNodeID(int cid){ //ALEXIS
+		node_id = cid;
 	}
 
-	int getCameraID(){ //ALEXIS
-		return camera_id;
+	int getNodeID(){ //ALEXIS
+		return node_id;
 	}
 private:
 
-	int camera_id; //ALEXIS
+	int node_id; //ALEXIS
 	//vector<vector<uchar>> packet_queue;
 	serial_source telosb;
 	boost::thread r_thread;

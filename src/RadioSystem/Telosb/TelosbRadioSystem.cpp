@@ -46,7 +46,7 @@ int TelosbRadioSystem::openRadio(const char *serial_device, int baud_rate, int n
 
 void TelosbRadioSystem::receiverThread(){
 	int len;
-	int camera_id = TelosbRadioSystem::getCameraID();
+	int node_id = TelosbRadioSystem::getNodeID(); //ALEXIS
 	uchar* packet = NULL;
 	char buf[1024];
 	asn_dec_rval_t rval;
@@ -55,12 +55,14 @@ void TelosbRadioSystem::receiverThread(){
 		packet = (uchar*)read_serial_packet(telosb, &len);
 
 		//READ PACKET HEADER
-		cout << "TRS: message received!" << endl;
+		//cout << "TRS: message received!" << endl; //ALEXIS
 
 		int src_addr = packet[8]*256+packet[9];
 		int dst_addr = packet[10]*256+packet[11];
 		
-		if(camera_id == dst_addr || camera_id == 0){ //ALEXIS filter
+		//if(node_id == dst_addr || node_id == 0){ //ALEXIS filter
+		if(node_id == dst_addr){ //ALEXIS filter 11/12 -> node_id = 0 removed
+			cout << "TRS: message received" << endl;
 			MessageType message_type = static_cast<MessageType>(packet[17]);
 			int seq_num = static_cast<int>(packet[12]);
 			int num_packets = *(unsigned short*)&packet[13];
@@ -73,8 +75,12 @@ void TelosbRadioSystem::receiverThread(){
 			for(int i=0;i<bitstream_size;i++){
 				bitstream.push_back(packet[18+i]);
 			}
-
-			incoming_message_queue_ptr->addPacketToQueue(src_addr, dst_addr,message_type,seq_num,num_packets,packet_id,bitstream);
+			//ALEXIS 12/12
+			if(node_id==0)
+				incoming_message_queue_ptr->addPacketToSinkQueue(src_addr, dst_addr,message_type,seq_num,num_packets,packet_id,bitstream);
+			else
+				incoming_message_queue_ptr->addPacketToQueue(src_addr, dst_addr,message_type,seq_num,num_packets,packet_id,bitstream);
+			//
 		}
 		
 		if(packet!=NULL){

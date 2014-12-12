@@ -46,12 +46,12 @@ void RadioSystem::startWiFiReceiver(){
 	wifiRadioSystem_ptr->startReceiver();
 }
 
-int RadioSystem::startTelosbReceiver(string dev_name, string camera_id){
-	telosbRadioSystem_ptr->setCameraID(atoi(camera_id.c_str()));
+int RadioSystem::startTelosbReceiver(string dev_name, string node_id){
+	telosbRadioSystem_ptr->setNodeID(atoi(node_id.c_str()));
 	if(telosbRadioSystem_ptr->openRadio(dev_name.c_str(),115200,0)==0){
 		telosbRadioSystem_ptr->startReceiver();
 		cout << "RS: telosb ready!" << endl;
-		cout << "RS: camera " << telosbRadioSystem_ptr->getCameraID() << endl;
+		cout << "RS: camera " << telosbRadioSystem_ptr->getNodeID() << endl;
 		return 0;
 	}
 	cout << "RS: Error in opening radio device" << endl;

@@ -422,9 +422,13 @@ void SendMessageTask::execute(){
 			}
 			//usleep(30000);
 		}
-
-		cout << "SMT: packet sent!" << endl;
-
+		if (msg_to_send->getDestination() == 0){
+			cout << "SMT: packet sent to sink!" << endl;
+		}
+		else{
+			cout << "SMT: packet sent to camera " << msg_to_send->getDestination() << "!" << endl;
+		}
+			
 		//usleep(30000);
 		remainingBytes-=curFrameLength;
 		header_only_packet = false;

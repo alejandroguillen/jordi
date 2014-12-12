@@ -71,28 +71,45 @@ void Connection::handleReadMessage(const boost::system::error_code& ec)
 			stop();
 		}
 
-		//uchar data[h->getPayloadSize()];
-		readBuffer_.clear();
-		readBuffer_.resize(h->getPayloadSize());
-		boost::system::error_code ec;
+		//NodeManager*(node_manager)
+		//SC = Connection->
 
-		//read the payload
-		/*socket_.read_some(
-				boost::asio::buffer(data, h->getPayloadSize()), ec);*/
+		//if((node_manager->node_id > 2) || (h->getDstAddr() == node_manager->node_id)){ //ALEXIS filter, unnecessary filter
+		if(h->getDstAddr() == node_manager->node_id){ //ALEXIS filter 11/12, unnecessary filter
+			if(node_manager->node_id > 2)
+				cout << "That's for me. Cooperator " << node_manager->node_id << endl; //ALEXIS
+			else
+				cout << "That's for me. Camera " << node_manager->node_id << endl; //ALEXIS
+			
+			//uchar data[h->getPayloadSize()];
+			readBuffer_.clear();
+			readBuffer_.resize(h->getPayloadSize());
+			boost::system::error_code ec;
 
-		async_read(socket_,boost::asio::buffer(readBuffer_, h->getPayloadSize()),
-				boost::bind(&Connection::parseMessage, this,
-						boost::asio::placeholders::error,
-						boost::asio::placeholders::bytes_transferred));
+			//read the payload
+			/*socket_.read_some(
+					boost::asio::buffer(data, h->getPayloadSize()), ec);*/
 
-		/*if(!ec){
-			Message* msg = message_parser->parseMessage(h,data,this);
-			node_manager->notify_msg(msg);
-			readHeader();
+			async_read(socket_,boost::asio::buffer(readBuffer_, h->getPayloadSize()),
+					boost::bind(&Connection::parseMessage, this,
+							boost::asio::placeholders::error,
+							boost::asio::placeholders::bytes_transferred));
+
+			/*if(!ec){
+				Message* msg = message_parser->parseMessage(h,data,this);
+				node_manager->notify_msg(msg);
+				readHeader();
+			}
+			else{
+				connection_manager_.stop(this);
+			}*/
 		}
 		else{
-			connection_manager_.stop(this);
-		}*/
+			if(node_manager->node_id > 2)
+				cout << "Is not for me. Is for Cooperator " << h->getDstAddr() << endl; //ALEXIS
+			else
+				cout << "Is not for me. Is for Camera " << h->getDstAddr() << endl; //ALEXIS
+		}
 	}
 	else{
 		connection_manager_.stop(this);

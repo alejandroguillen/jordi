@@ -119,7 +119,7 @@ Message* MessageParser::parseMessage(Header* h, uchar* bitstream, Connection* cn
 
 		char buf[MAX_START_DATC_MESSAGE_SIZE];
 
-		cout << "Deserializing start atc message" << endl;
+		cout << "Deserializing start datc message" << endl;
 		int bitstream_size = h->getPayloadSize();
 		cout << "Bitstream size is " << bitstream_size << endl;
 

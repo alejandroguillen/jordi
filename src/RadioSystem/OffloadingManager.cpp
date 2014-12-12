@@ -114,8 +114,10 @@ void OffloadingManager::transmitStartDATC(StartDATCMsg* msg){
 	}
 	msg->setDetectorThreshold(next_detection_threshold);
 	msg->setMaxNumFeat((msg->getMaxNumFeat())*1.1);
-
-	for(int i=0;i<cooperatorList.size();i++){
+	msg->setSource(msg->getDestination()); //ALEXIS 11/12 can be change by node_id
+	//for(int i=0;i<cooperatorList.size();i++){ //ORIGINAL
+	for(int i=0;i<cooperators_to_use;i++){ //ALEXIS 11/12 -> to not sent multiple StartDATCMsg unnecessary
+		msg->setDestination(i+3); //ALEXIS 11/12
 		cooperatorList[i].connection->writeMsg(msg);
 	}
 	delete(msg);
@@ -330,6 +332,10 @@ void OffloadingManager::transmitNextCoop() {
 		top_left.yCoordinate = 0;
 
 		DataCTAMsg *msg = new DataCTAMsg(0,1,top_left,bitstream.size(),enc_time,0,bitstream);
+		//ALEXIS 11/12
+		msg->setSource(node_manager->node_id);
+		msg->setDestination(i+3);
+		//
 		cooperatorList[i].connection->writeMsg(msg);
 
 		next_coop++;

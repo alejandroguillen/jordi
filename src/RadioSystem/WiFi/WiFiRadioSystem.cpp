@@ -24,6 +24,7 @@ node_manager(nm)
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 
 	if(mode.compare("server") == 0){
+		//int node_id = nm->node_id;
 		//open the acceptor
 		std::cout << "server initializing..." << std::endl;
 		acceptor.open(endpoint.protocol());

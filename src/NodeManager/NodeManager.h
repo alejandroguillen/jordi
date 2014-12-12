@@ -17,7 +17,6 @@ class OffloadingManager;
 typedef struct CTA_param{
 	int quality_factor;
 	int num_slices;
-	int camera_id; //ALEXIS
 	//.... other params such as num slices (w and h?)
 } CTA_param_t;
 
@@ -69,7 +68,7 @@ class NodeManager{
 
 public:
 
-	NodeManager(NodeType node_type);
+	NodeManager(NodeType node_type, string ID);
 	void set_radioSystem(RadioSystem *rs);
 	void set_taskManager(TaskManager *tm);
 	void set_s2gInterface(S2GInterface *s2g);
@@ -86,7 +85,7 @@ public:
 	void notifyCooperatorOffline(Connection* conn);
 	void notifyOffloadingCompleted(vector<KeyPoint>& kpts,Mat& features, double detTime, double descTime);
 	//void sendTestPacket(Message* msg);
-
+	int node_id; //ALEXIS
 private:
 	SystemState cur_state;
 	NodeType node_type;

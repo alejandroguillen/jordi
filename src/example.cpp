@@ -39,7 +39,7 @@ int main(int argc, char ** argv){
 	switch(type){
 	case SINK:{
 		//create the main components
-		nodeMng  = new NodeManager(SINK);
+		nodeMng  = new NodeManager(SINK, argv[5]);
 		msg_parser = new MessageParser();
 		radioSys = new RadioSystem(nodeMng, msg_parser,argv[3],argv[4]);
 		taskMng  = new TaskManager(nodeMng);
@@ -67,7 +67,7 @@ int main(int argc, char ** argv){
 		break;
 	}
 	case CAMERA:{
-		nodeMng  = new NodeManager(CAMERA);
+		nodeMng  = new NodeManager(CAMERA, argv[5]);
 		msg_parser = new MessageParser();
 		radioSys = new RadioSystem(nodeMng,msg_parser,argv[3],argv[4]);
 		taskMng  = new TaskManager(nodeMng);
@@ -81,7 +81,7 @@ int main(int argc, char ** argv){
 		taskMng->start();
 
 		//start a telosb receiver
-		radioSys->startTelosbReceiver(argv[2], argv[5]);
+		radioSys->startTelosbReceiver(argv[2], argv[5]); //ALEXIS
 
 		//start the WiFi manager
 		radioSys->startWiFiReceiver();
@@ -92,7 +92,7 @@ int main(int argc, char ** argv){
 		break;
 	}
 	case COOPERATOR:{
-		nodeMng  = new NodeManager(COOPERATOR);
+		nodeMng  = new NodeManager(COOPERATOR,argv[5]);
 		msg_parser = new MessageParser();
 		radioSys = new RadioSystem(nodeMng,msg_parser,argv[3],argv[4]);
 		taskMng  = new TaskManager(nodeMng);

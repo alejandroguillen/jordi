@@ -38,22 +38,30 @@ struct message_queue_entry{
 	int seq_num;
 	int num_packets;	//this is the number of packets that should be added
 	int last_packet_id; //this is the last packet_id added
+	int last_packet_id1; 	//ALEXIS 12/12
+	int last_packet_id2;	//ALEXIS 12/12
 	vector<uchar> bitstream; //this is the complete ASN.1  bistream
 	double start_time;
 	double end_time;
 };
 
+
 class IncomingMessageQueue {
 public:
 	IncomingMessageQueue(RadioSystem* radio_system, MessageParser* m);
 	virtual ~IncomingMessageQueue();
-
 	int size();
 
 	void addPacketToQueue(int src_addr, int dst_addr, MessageType message_type, int seq_num, int num_packets, int packet_id, vector<char> packet_bitstream);
-
+	//ALEXIS 12/12
+	void addPacketToSinkQueue(int src_addr, int dst_addr, MessageType message_type, int seq_num, int num_packets, int packet_id, vector<char> packet_bitstream);
+	//
 private:
 	int last_seq_num;
+	//int last_src_addr; //ALEXIS 11/12
+	int last_seq_num1; //ALEXIS 12/12
+	int last_seq_num2; //ALEXIS 12/12
+	
 	RadioSystem *radio_system_ptr;
 	MessageParser *msg_parser;
 	vector<message_queue_entry> message_queue;

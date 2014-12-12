@@ -31,7 +31,7 @@ public:
 	void join(){
 		m_thread.join();
 	}*/
-	int startTelosbReceiver(string dev_name, string camera_id);
+	int startTelosbReceiver(string dev_name, string node_id);
 	void joinTelosbReceiver();
 
 	void startWiFiReceiver();
