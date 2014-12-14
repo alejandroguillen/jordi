@@ -4,6 +4,7 @@
 #include <boost/thread.hpp>
 #include <boost/date_time.hpp>
 #include <queue>
+#include <vector>
 #include <boost/thread/condition.hpp>
 #include "RadioSystem/RadioSystem.h"
 #include "TaskManager/TaskManager.h"
@@ -93,6 +94,7 @@ private:
 	CTA_param_t cta_param;
 	ATC_param_t atc_param;
 	DATC_param_t datc_param;
+	std::vector<DATC_param_t> datc_param_camera;
 
 	unsigned short outgoing_msg_seq_num;
 	int frame_id;

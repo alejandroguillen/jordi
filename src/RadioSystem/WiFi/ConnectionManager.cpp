@@ -20,7 +20,7 @@ void ConnectionManager::printActiveConnections(){
 		boost::asio::ip::tcp::socket& sock = cn->socket();
 		std::string sClientIp = sock.remote_endpoint().address().to_string();
 		unsigned short uiClientPort = sock.remote_endpoint().port();
-		std::cout << sClientIp << "		" << uiClientPort << std::endl;
+		std::cout << sClientIp << "		" << uiClientPort << " 	" << std::endl;
 	}
 }
 

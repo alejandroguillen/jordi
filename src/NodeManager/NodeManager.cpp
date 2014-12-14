@@ -41,7 +41,7 @@ NodeManager::NodeManager(NodeType nt, string ID){
 	}
 	case COOPERATOR:{
 		BRISK_detParams detPrms(60,4);
-
+		
 		BRISK_descParams dscPrms;
 		extractor = new VisualFeatureExtraction();
 		extractor->setDetector("BRISK", &detPrms);
@@ -55,6 +55,7 @@ NodeManager::NodeManager(NodeType nt, string ID){
 		break;
 	}
 	cur_state = IDLE;
+	datc_param_camera.reserve(2); //ALEXIS 14/12
 	received_notifications = 0;
 	outgoing_msg_seq_num = 255;
 	frame_id = -1;
@@ -94,7 +95,7 @@ void NodeManager::notify_msg(Message *msg){
 			break;
 		}
 		case CAMERA:
-		{
+		{	
 			//update system state and start cta processing
 			cta_param.quality_factor = ((StartCTAMsg*)msg)->getQualityFactor();
 			cta_param.num_slices = ((StartCTAMsg*)msg)->getNumSlices();
@@ -203,20 +204,26 @@ void NodeManager::notify_msg(Message *msg){
 		}
 		case COOPERATOR:
 		{
-			datc_param.max_features =  ((StartDATCMsg*)msg)->getMaxNumFeat();
-			datc_param.det = ((StartDATCMsg*)msg)->getDetectorType();
-			datc_param.detection_threshold = ((StartDATCMsg*)msg)->getDetectorThreshold();
-			datc_param.desc = ((StartDATCMsg*)msg)->getDescriptorType();
-			datc_param.desc_length = ((StartDATCMsg*)msg)->getDescriptorLength();
+			int i = msg->getSource();//ALEXIS 14/12
 
-			datc_param.coding = ((StartDATCMsg*)msg)->getCoding();
-			datc_param.transmit_keypoints = ((StartDATCMsg*)msg)->getTransferKpt();
-			datc_param.transmit_orientation = ((StartDATCMsg*)msg)->getTransferOrientation();
-			datc_param.transmit_scale = ((StartDATCMsg*)msg)->getTransferScale();
+			//ALEXIS adding vector: _camera[i]
+			cout << "NM: Start saving DATC Parameters from Camera " << msg->getSource() << endl;
+			
+			datc_param_camera[i].max_features = ((StartDATCMsg*)msg)->getMaxNumFeat();
+			datc_param_camera[i].det = ((StartDATCMsg*)msg)->getDetectorType();
+			datc_param_camera[i].detection_threshold = ((StartDATCMsg*)msg)->getDetectorThreshold();
+			datc_param_camera[i].desc = ((StartDATCMsg*)msg)->getDescriptorType();
+			datc_param_camera[i].desc_length = ((StartDATCMsg*)msg)->getDescriptorLength();
 
-			datc_param.num_feat_per_block = ((StartDATCMsg*)msg)->getNumFeatPerBlock();
-			datc_param.num_cooperators = ((StartDATCMsg*)msg)->getNumCooperators();
+			datc_param_camera[i].coding = ((StartDATCMsg*)msg)->getCoding();
+			datc_param_camera[i].transmit_keypoints = ((StartDATCMsg*)msg)->getTransferKpt();
+			datc_param_camera[i].transmit_orientation = ((StartDATCMsg*)msg)->getTransferOrientation();
+			datc_param_camera[i].transmit_scale = ((StartDATCMsg*)msg)->getTransferScale();
 
+			datc_param_camera[i].num_feat_per_block = ((StartDATCMsg*)msg)->getNumFeatPerBlock();
+			datc_param_camera[i].num_cooperators = ((StartDATCMsg*)msg)->getNumCooperators();
+			cout << "NM: Saved DATC Parameters. NumberCoop " << ((StartDATCMsg*)msg)->getNumCooperators() << endl;
+			//
 			delete(msg);
 		}
 		}
@@ -672,7 +679,7 @@ void NodeManager::DATC_processing_thread_cooperator(DataCTAMsg* msg){
 	boost::mutex monitor;
 	boost::mutex::scoped_lock lk(monitor);
 	Task *cur_task;
-
+	int i = msg->getSource();
 	//decode the image (should become a task)
 	cv::Mat slice;
 	OCTET_STRING_t oct_data = msg->getData();
@@ -714,7 +721,7 @@ void NodeManager::DATC_processing_thread_cooperator(DataCTAMsg* msg){
 	delete((SendWiFiMessageTask*)cur_task);
 
 	// Extract the keypoints
-	cur_task = new ExtractKeypointsTask(extractor,slice,datc_param.detection_threshold);
+	cur_task = new ExtractKeypointsTask(extractor,slice,datc_param_camera[i].detection_threshold);
 	taskManager_ptr->addTask(cur_task);
 	cout << "NM: Waiting the end of the extract_keypoints_task" << endl;
 	while(!cur_task->completed){
@@ -725,13 +732,13 @@ void NodeManager::DATC_processing_thread_cooperator(DataCTAMsg* msg){
 	vector<KeyPoint> kpts = ((ExtractKeypointsTask*)cur_task)->getKeypoints();
 	double detTime = ((ExtractKeypointsTask*)cur_task)->getDetTime();
 	cout << "extracted " << (int)kpts.size() << "keypoints" << endl;
-cerr << "extracted " << (int)kpts.size() << "keypoints\tDetThreshold=" << datc_param.detection_threshold << endl;
+cerr << "extracted " << (int)kpts.size() << "keypoints\tDetThreshold=" << datc_param_camera[i].detection_threshold << endl;
 
 	delete((ExtractKeypointsTask*)cur_task);
 
 	//Extract features
 	std::cout<<std::dec;
-	cur_task = new ExtractFeaturesTask(extractor,slice,kpts,datc_param.max_features);
+	cur_task = new ExtractFeaturesTask(extractor,slice,kpts,datc_param_camera[i].max_features);
 	taskManager_ptr->addTask(cur_task);
 	cout << "NM: Waiting the end of the extract_features_task" << endl;
 	while(!cur_task->completed){

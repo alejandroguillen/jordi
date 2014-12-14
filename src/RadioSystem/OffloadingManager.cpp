@@ -114,9 +114,9 @@ void OffloadingManager::transmitStartDATC(StartDATCMsg* msg){
 	}
 	msg->setDetectorThreshold(next_detection_threshold);
 	msg->setMaxNumFeat((msg->getMaxNumFeat())*1.1);
-	msg->setSource(msg->getDestination()); //ALEXIS 11/12 can be change by node_id
-	//for(int i=0;i<cooperatorList.size();i++){ //ORIGINAL
-	for(int i=0;i<cooperators_to_use;i++){ //ALEXIS 11/12 -> to not sent multiple StartDATCMsg unnecessary
+	msg->setSource(msg->getDestination()); //ALEXIS 11/12 can be changed by node_id
+	for(int i=0;i<cooperatorList.size();i++){ //ORIGINAL
+	//for(int i=0;i<cooperators_to_use;i++){ //ALEXIS 11/12 -> to not sent multiple StartDATCMsg unnecessary. 14/12 not working correctly
 		msg->setDestination(i+3); //ALEXIS 11/12
 		cooperatorList[i].connection->writeMsg(msg);
 	}
