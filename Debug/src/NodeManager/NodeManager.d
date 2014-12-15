@@ -73,6 +73,7 @@ src/NodeManager/NodeManager.d: ../src/NodeManager/NodeManager.cpp \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ConnectionManager.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/Connection.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/Header.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ALWiFiRadioSystem.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/S2GInterface/S2GInterface.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/ACKsliceMsg.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/OffloadingManager.h \
@@ -235,6 +236,8 @@ src/NodeManager/NodeManager.d: ../src/NodeManager/NodeManager.cpp \
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/Connection.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/Header.h:
+
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ALWiFiRadioSystem.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/S2GInterface/S2GInterface.h:
 

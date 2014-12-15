@@ -10,6 +10,7 @@
 #include <Messages/Message.h>
 #include <RadioSystem/Telosb/TelosbRadioSystem.h>
 #include <RadioSystem/WiFi/WiFiRadioSystem.h>
+#include <RadioSystem/WiFi/ALWiFiRadioSystem.h> //ALEXIS 15/12 WIFI CLASS
 
 
 using namespace std;

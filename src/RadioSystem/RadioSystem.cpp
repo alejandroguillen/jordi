@@ -1,15 +1,18 @@
 #include <stdlib.h>
 #include <iostream>
+#include <boost/asio.hpp>
+#include <vector> //ALEXIS 15/12 WIFI
 #include "RadioSystem/RadioSystem.h"
 #include "NodeManager/NodeManager.h"
 #include "RadioSystem/WiFi/WiFiRadioSystem.h"
+#include "RadioSystem/WiFi/ALWiFiRadioSystem.h" //ALEXIS 15/12 WIFI CLASS
 
 using namespace std;
 
 
 
 
-RadioSystem::RadioSystem(NodeManager* nm, MessageParser* m, string ip_address, string port){
+RadioSystem::RadioSystem(NodeManager* nm, MessageParser* m, string ip_address, string ip_address2, string port){
 	nodeManager_ptr = nm;
 	msg_parser = m;
 	incoming_message_queue_ptr = new IncomingMessageQueue(this,msg_parser);
@@ -32,9 +35,21 @@ RadioSystem::RadioSystem(NodeManager* nm, MessageParser* m, string ip_address, s
 		break;
 	}
 	case COOPERATOR:
-	{
+	{	
 		tcp::resolver::query query(ip_address, port);
-		wifiRadioSystem_ptr = new WiFiRadioSystem(query,std::string("client"),nodeManager_ptr);
+		//wifiRadioSystem_ptr = new WiFiRadioSystem(query,std::string("client"),nodeManager_ptr); ORIGINAL
+		//if(ip_address != ip_address2)	//ALEXIS 15/12 WIFI
+			//tcp::resolver::query query2(ip_address2, port); //ALEXIS 14/12 WIFI
+		//if(ip_address != ip_address2){ //ALEXIS 15/12 WIFI
+			//tcp::resolver::query query2(ip_address2, port); //ALEXIS 15/12 WIFI
+			//wifiRadioSystem_ptr2 = new WiFiRadioSystem(query2,std::string("client"),nodeManager_ptr); //ALEXIS 14/12 WIFI THREAD
+		//}
+		
+		//ALEXIS 15/12 WIFI CONNECTION
+		tcp::resolver::query query2(ip_address2, port);
+		wifiRadioSystem_ptr2 = new ALWiFiRadioSystem(query,query2,std::string("client"),nodeManager_ptr);
+		//
+		
 		break;
 	}
 	default:
@@ -45,6 +60,10 @@ RadioSystem::RadioSystem(NodeManager* nm, MessageParser* m, string ip_address, s
 void RadioSystem::startWiFiReceiver(){
 	wifiRadioSystem_ptr->startReceiver();
 }
+void RadioSystem::startWiFiReceiver2(){
+	wifiRadioSystem_ptr2->startReceiver();
+}
+
 
 int RadioSystem::startTelosbReceiver(string dev_name, string node_id){
 	telosbRadioSystem_ptr->setNodeID(atoi(node_id.c_str()));
@@ -61,6 +80,7 @@ int RadioSystem::startTelosbReceiver(string dev_name, string node_id){
 void RadioSystem::joinTelosbReceiver(){
 	telosbRadioSystem_ptr->joinReceiver();
 }
+
 
 serial_source RadioSystem::getTelosb(){
 	return telosbRadioSystem_ptr->getTelosb();

@@ -75,6 +75,7 @@ src/RadioSystem/WiFi/Connection.d: ../src/RadioSystem/WiFi/Connection.cpp \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/WiFiRadioSystem.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ConnectionManager.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/Connection.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ALWiFiRadioSystem.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/S2GInterface/S2GInterface.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/MessageParser.h
 
@@ -229,6 +230,8 @@ src/RadioSystem/WiFi/Connection.d: ../src/RadioSystem/WiFi/Connection.cpp \
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ConnectionManager.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/Connection.h:
+
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ALWiFiRadioSystem.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/S2GInterface/S2GInterface.h:
 
