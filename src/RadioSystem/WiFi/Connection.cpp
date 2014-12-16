@@ -71,16 +71,14 @@ void Connection::handleReadMessage(const boost::system::error_code& ec)
 			stop();
 		}
 
-		//NodeManager*(node_manager)
-		//SC = Connection->
-
+	
 		//if((node_manager->node_id > 2) || (h->getDstAddr() == node_manager->node_id)){ //ALEXIS filter, unnecessary filter
-		if(h->getDstAddr() == node_manager->node_id){ //ALEXIS filter 11/12, unnecessary filter
+		/*if(h->getDstAddr() == node_manager->node_id){ //ALEXIS filter 11/12, unnecessary filter
 			if(node_manager->node_id > 2)
 				cout << "That's for me. Cooperator " << node_manager->node_id << endl; //ALEXIS
 			else
 				cout << "That's for me. Camera " << node_manager->node_id << endl; //ALEXIS
-			
+		*/	
 			//uchar data[h->getPayloadSize()];
 			readBuffer_.clear();
 			readBuffer_.resize(h->getPayloadSize());
@@ -103,13 +101,13 @@ void Connection::handleReadMessage(const boost::system::error_code& ec)
 			else{
 				connection_manager_.stop(this);
 			}*/
-		}
-		else{
+		//}
+		/*else{
 			if(node_manager->node_id > 2)
 				cout << "Is not for me. Is for Cooperator " << h->getDstAddr() << endl; //ALEXIS
 			else
 				cout << "Is not for me. Is for Camera " << h->getDstAddr() << endl; //ALEXIS
-		}
+		//}*/
 	}
 	else{
 		connection_manager_.stop(this);

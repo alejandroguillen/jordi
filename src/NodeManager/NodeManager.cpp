@@ -145,7 +145,7 @@ void NodeManager::notify_msg(Message *msg){
 			atc_param.transmit_scale = ((StartATCMsg*)msg)->getTransferScale();
 
 			atc_param.num_feat_per_block = ((StartATCMsg*)msg)->getNumFeatPerBlock();
-			
+						
 			//ALEXIS parameter to get camera_id
 			//camera_id = msg->getDestination();
 
@@ -205,6 +205,7 @@ void NodeManager::notify_msg(Message *msg){
 		case COOPERATOR:
 		{
 			int i = msg->getSource();//ALEXIS 14/12
+			i--; //ALEXIS 16/12 VECTOR only 2 spaces, so it has to be 0 (camera1) or 1 (camera2)
 
 			//ALEXIS adding vector: _camera[i]
 			cout << "NM: Start saving DATC Parameters from Camera " << msg->getSource() << endl;
@@ -222,7 +223,7 @@ void NodeManager::notify_msg(Message *msg){
 
 			datc_param_camera[i].num_feat_per_block = ((StartDATCMsg*)msg)->getNumFeatPerBlock();
 			datc_param_camera[i].num_cooperators = ((StartDATCMsg*)msg)->getNumCooperators();
-			cout << "NM: Saved DATC Parameters. NumberCoop " << ((StartDATCMsg*)msg)->getNumCooperators() << endl;
+			cout << "NM: Saved DATC Parameters. NumberCoop " << ((StartDATCMsg*)msg)->getNumCooperators() << endl; //ALEXIS 15/12
 			//
 			delete(msg);
 		}
@@ -639,7 +640,7 @@ void NodeManager::DATC_processing_thread(){
 	delete((TransmitLoadsTask*)cur_task);
 
 	// Extract the keypoints of own load
-	cur_task = new ExtractKeypointsTask(extractor,myLoad,atc_param.detection_threshold);
+	cur_task = new ExtractKeypointsTask(extractor,myLoad,datc_param.detection_threshold); //ALEXIS 16/12 ERROR atc_param?? datc_param
 	taskManager_ptr->addTask(cur_task);
 	cout << "NM: Waiting the end of the extract_keypoints_task" << endl;
 	while(!cur_task->completed){
@@ -654,7 +655,7 @@ void NodeManager::DATC_processing_thread(){
 	delete((ExtractKeypointsTask*)cur_task);
 
 	//Extract features
-	cur_task = new ExtractFeaturesTask(extractor,myLoad,kpts,atc_param.max_features);
+	cur_task = new ExtractFeaturesTask(extractor,myLoad,kpts,datc_param.max_features); //ALEXIS 16/12 ERROR atc_param?? datc_param
 	taskManager_ptr->addTask(cur_task);
 	cout << "NM: Waiting the end of the extract_features_task" << endl;
 	while(!cur_task->completed){
@@ -679,7 +680,6 @@ void NodeManager::DATC_processing_thread_cooperator(DataCTAMsg* msg){
 	boost::mutex monitor;
 	boost::mutex::scoped_lock lk(monitor);
 	Task *cur_task;
-	int i = msg->getSource();
 	//decode the image (should become a task)
 	cv::Mat slice;
 	OCTET_STRING_t oct_data = msg->getData();
@@ -719,7 +719,10 @@ void NodeManager::DATC_processing_thread_cooperator(DataCTAMsg* msg){
 	}
 	cout << "NM: exiting the wifi tx thread" << endl;
 	delete((SendWiFiMessageTask*)cur_task);
-
+	
+	int i = msg->getSource(); //ALEXIS 16/12 VECTOR
+	i--; //ALEXIS 16/12 VECTOR only 2 spaces, so it has to be 0 (camera1) or 1 (camera2)
+	
 	// Extract the keypoints
 	cur_task = new ExtractKeypointsTask(extractor,slice,datc_param_camera[i].detection_threshold);
 	taskManager_ptr->addTask(cur_task);
@@ -851,7 +854,6 @@ void NodeManager::DATC_store_features(DataATCMsg* msg){
 	delete((DecodeFeaturesTask*)cur_task);
 
 	//put the features somewhere
-
 	offloading_manager->addKeypointsAndFeatures(keypoints,features,msg->getTcpConnection(),
 			msg->getDetTime(),msg->getDescTime(),msg->getKptsEncodingTime(),msg->getFeatEncodingTime());
 
@@ -896,27 +898,27 @@ void NodeManager::notifyOffloadingCompleted(vector<KeyPoint>& kpts,Mat& features
 	Task *cur_task;
 	//prepare the ATC_DATA message and sends it to the SINK
 	//ugly... put into a task!
-	cout << "cutting: kpts size "<< kpts.size() << "feat size" << features.rows << endl;
-	extractor->cutFeatures(kpts,features,atc_param.max_features);
+	cout << "cutting: kpts size "<< kpts.size() << " feat size " << features.rows << endl;
+	extractor->cutFeatures(kpts,features,datc_param.max_features); //ALEXIS 16/12 ERROR atc_param?? datc_param
 	if(kpts.size()>0){
 
-		int num_blocks = ceil((float)kpts.size() / (float)atc_param.num_feat_per_block);
+		int num_blocks = ceil((float)kpts.size() / (float)datc_param.num_feat_per_block); //ALEXIS 16/12 ERROR atc_param?? datc_param
 		int beg,end;
 
-		cout << "features per block: " << (int)atc_param.num_feat_per_block << endl;
+		cout << "features per block: " << (int)datc_param.num_feat_per_block << endl; //ALEXIS 16/12ERROR atc_param?? datc_param
 
 		for(int i=0; i<num_blocks; i++){
 
 			vector<uchar> block_ft_bitstream;
 			vector<uchar> block_kp_bitstream;
 
-			beg = i*atc_param.num_feat_per_block;
-			end = min((int)(unsigned int)kpts.size(), (int)(beg+atc_param.num_feat_per_block));
+			beg = i*datc_param.num_feat_per_block; //ALEXIS 16/12 ERROR atc_param?? datc_param
+			end = min((int)(unsigned int)kpts.size(), (int)(beg+datc_param.num_feat_per_block)); //ALEXIS 16/12 ERROR atc_param?? datc_param
 
 			cout << "here" << beg << " "<< end << endl;
 			Mat features_sub = features.rowRange(beg,end);
 
-			if(atc_param.coding == CodingChoices_none){
+			if(datc_param.coding == CodingChoices_none){ //ALEXIS 16/12 ERROR atc_param?? datc_param
 				cur_task = new EncodeFeaturesTask(encoder,"BRISK",features_sub,0);
 				taskManager_ptr->addTask(cur_task);
 				//cout << "NM: Waiting the end of the encode_features_task" << endl;
@@ -927,7 +929,7 @@ void NodeManager::notifyOffloadingCompleted(vector<KeyPoint>& kpts,Mat& features
 				block_ft_bitstream = ((EncodeFeaturesTask*)cur_task)->getFeatsBitstream();
 				delete((EncodeFeaturesTask*)cur_task);
 			}
-			if(atc_param.coding == CodingChoices_entropyCoding){
+			if(datc_param.coding == CodingChoices_entropyCoding){ //ALEXIS 16/12 ERROR atc_param?? datc_param
 				cur_task = new EncodeFeaturesTask(encoder,"BRISK",features_sub,1);
 				taskManager_ptr->addTask(cur_task);
 				//cout << "NM: Waiting the end of the encode_features_task" << endl;
@@ -949,8 +951,8 @@ void NodeManager::notifyOffloadingCompleted(vector<KeyPoint>& kpts,Mat& features
 			//cout << "NM: ended encode_kpts_task" << endl;
 			block_kp_bitstream = ((EncodeKeypointsTask*)cur_task)->getKptsBitstream();
 			delete((EncodeKeypointsTask*)cur_task);
-			cout << "sending " << (int)(sub_kpts.size()) << "keypoints" << endl;
-			cout << "and " << (int)(features_sub.rows) << "features" << endl;
+			cout << "sending " << (int)(sub_kpts.size()) << " keypoints" << endl;
+			cout << "and " << (int)(features_sub.rows) << " features" << endl;
 
 			//TODO: understand what to do with encoding times...
 			DataATCMsg *msg = new DataATCMsg(frame_id, i, num_blocks, camDetTime, camDescTime, 0, 0, 0, features_sub.rows, sub_kpts.size(), block_ft_bitstream, block_kp_bitstream);

@@ -92,7 +92,7 @@ void RadioSystem::notifyMsg(Message* msg){
 }
 
 std::set<Connection*> RadioSystem::getWiFiConnections(){
-	return wifiRadioSystem_ptr->getWiFiConnections();
+	return wifiRadioSystem_ptr2->getWiFiConnections(); //ALEXIS 16/12 WIFI CLASS
 }
 
 //void RadioSystem::radioSystemThread(){
