@@ -223,7 +223,7 @@ void NodeManager::notify_msg(Message *msg){
 
 			datc_param_camera[i].num_feat_per_block = ((StartDATCMsg*)msg)->getNumFeatPerBlock();
 			datc_param_camera[i].num_cooperators = ((StartDATCMsg*)msg)->getNumCooperators();
-			cout << "NM: Saved DATC Parameters. NumberCoop " << ((StartDATCMsg*)msg)->getNumCooperators() << endl; //ALEXIS 15/12
+			cout << "NM: Saved DATC Parameters in Coop " << (msg)->getDestination() << endl; //ALEXIS 17/12 COUT
 			//
 			delete(msg);
 		}
@@ -640,7 +640,7 @@ void NodeManager::DATC_processing_thread(){
 	delete((TransmitLoadsTask*)cur_task);
 
 	// Extract the keypoints of own load
-	cur_task = new ExtractKeypointsTask(extractor,myLoad,datc_param.detection_threshold); //ALEXIS 16/12 ERROR atc_param?? datc_param
+	cur_task = new ExtractKeypointsTask(extractor,myLoad,atc_param.detection_threshold); //ALEXIS 16/12 ERROR atc_param?? datc_param
 	taskManager_ptr->addTask(cur_task);
 	cout << "NM: Waiting the end of the extract_keypoints_task" << endl;
 	while(!cur_task->completed){
@@ -655,7 +655,7 @@ void NodeManager::DATC_processing_thread(){
 	delete((ExtractKeypointsTask*)cur_task);
 
 	//Extract features
-	cur_task = new ExtractFeaturesTask(extractor,myLoad,kpts,datc_param.max_features); //ALEXIS 16/12 ERROR atc_param?? datc_param
+	cur_task = new ExtractFeaturesTask(extractor,myLoad,kpts,atc_param.max_features); //ALEXIS 16/12 ERROR atc_param?? datc_param
 	taskManager_ptr->addTask(cur_task);
 	cout << "NM: Waiting the end of the extract_features_task" << endl;
 	while(!cur_task->completed){
@@ -865,12 +865,9 @@ void NodeManager::notifyCooperatorOnline(Connection* cn){
 	int port = cn->socket().remote_endpoint().port();
 	CoopInfoMsg *msg = new CoopInfoMsg(ip_addr,port,CoopStatus_online);
 	
-	//ALEXIS 11/12 not sure to work, the notifyCooperatorOnline don't need a source to be sent
+	//ALEXIS 11/12
 	msg->setSource(node_id);
-	if(node_id>2)
-		msg->setDestination(msg->getSource());
-	else
-		msg->setDestination(0);
+	msg->setDestination(0);
 	//
 	sendMessage(msg);
 }
@@ -881,12 +878,9 @@ void NodeManager::notifyCooperatorOffline(Connection* cn){
 	int port = cn->socket().remote_endpoint().port();
 	CoopInfoMsg *msg = new CoopInfoMsg(ip_addr,port,CoopStatus_offline);
 	
-	//ALEXIS 11/12 not sure to work, the notifyCooperatorOffline don't need a source to be sent
+	//ALEXIS 11/12
 	msg->setSource(node_id);
-	if(node_id>2)
-		msg->setDestination(msg->getSource());
-	else
-		msg->setDestination(0);
+	msg->setDestination(0);
 	//
 	sendMessage(msg);
 }
