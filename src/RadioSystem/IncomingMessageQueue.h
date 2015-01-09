@@ -40,6 +40,7 @@ struct message_queue_entry{
 	int last_packet_id; //this is the last packet_id added
 	int last_packet_id1; 	//ALEXIS 12/12
 	int last_packet_id2;	//ALEXIS 12/12
+	//vector<int> last_packet_id1; //ALEXIS 09/01 Vectorial
 	vector<uchar> bitstream; //this is the complete ASN.1  bistream
 	double start_time;
 	double end_time;
@@ -61,6 +62,7 @@ private:
 	//int last_src_addr; //ALEXIS 11/12
 	int last_seq_num1; //ALEXIS 12/12
 	int last_seq_num2; //ALEXIS 12/12
+	//vector<int> last_seq_num1; //ALEXIS 09/01 Vectorial
 	
 	RadioSystem *radio_system_ptr;
 	MessageParser *msg_parser;

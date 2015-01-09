@@ -22,6 +22,20 @@ void OffloadingManager::addCooperator(Connection* c){
 	temp_coop.Pdpx = 3.2e6;
 	temp_coop.Pdip = 10000;
 	temp_coop.Pe = 1000;
+	
+	//ALEXIS 09/01 COOP ID
+	int m=2;
+	std::pair<std::set<int>::iterator,bool> ret;
+	while(true){
+		m++;
+		ret = id.insert(m);
+		if (ret.second==true){
+			break;
+		}
+	}
+	temp_coop.id = m;
+	std::cerr << "added Coop " << temp_coop.id << endl;
+	//
 
 	cooperatorList.push_back(temp_coop);
 }
@@ -32,6 +46,11 @@ void OffloadingManager::removeCooperator(Connection* c){
 		if(temp_coop.connection == c){
 			delete temp_coop.processing_speed_estimator;
 			delete temp_coop.tx_speed_estimator;
+			//ALEXIS 09/01 COOP ID
+			std::cerr << "removed Coop " << temp_coop.id << endl;
+			int m = temp_coop.id;
+			id.erase(m);
+			//
 			cooperatorList.erase(cooperatorList.begin()+i);
 		}
 	}
@@ -117,7 +136,8 @@ void OffloadingManager::transmitStartDATC(StartDATCMsg* msg){
 	msg->setSource(msg->getDestination()); //ALEXIS 11/12 can be changed by node_id
 	for(int i=0;i<cooperatorList.size();i++){ //ORIGINAL
 	//for(int i=0;i<cooperators_to_use;i++){ //ALEXIS 11/12 -> to not sent multiple StartDATCMsg unnecessary. 14/12 not working correctly
-		msg->setDestination(i+3); //ALEXIS 11/12
+		//msg->setDestination(i+3); //ALEXIS 11/12
+		msg->setDestination(cooperatorList[i].id); //ALEXIS 09/01 COOP ID
 		cooperatorList[i].connection->writeMsg(msg);
 	}
 	delete(msg);
@@ -334,8 +354,9 @@ void OffloadingManager::transmitNextCoop() {
 		DataCTAMsg *msg = new DataCTAMsg(0,1,top_left,bitstream.size(),enc_time,0,bitstream);
 		//ALEXIS 11/12
 		msg->setSource(node_manager->node_id);
-		msg->setDestination(i+3);
+		//msg->setDestination(i+3);
 		//
+		msg->setDestination(cooperatorList[i].id); //ALEXIS 09/01 COOP ID
 		cooperatorList[i].connection->writeMsg(msg);
 
 		next_coop++;

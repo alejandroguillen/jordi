@@ -50,6 +50,9 @@ typedef struct cooperator{
 	double descTime;
 	double kencTime;
 	double fencTime;
+	
+	int id; //ALEXIS 09/01 COOP ID
+	
 }cooperator;
 
 class OffloadingManager{
@@ -117,6 +120,8 @@ private:
 	boost::asio::io_service::work work;
 
 	boost::mutex mut;
+	
+	std::set<int> id; //ALEXIS 09/01 COOP ID
 
 };
 
