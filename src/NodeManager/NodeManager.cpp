@@ -702,6 +702,19 @@ void NodeManager::DATC_processing_thread_cooperator(DataCTAMsg* msg){
 	ACKsliceMsg *ackslice_msg = new ACKsliceMsg(frame_id);
 	std::set<Connection*> connections1 = radioSystem_ptr->getWiFiConnections();
 	std::set<Connection*>::iterator it1 = connections1.begin();
+	//ALEXIS 09/01 ACK MESSAGE problem
+	int ack = msg->getSource();
+	ack--;
+	std::advance(it1, ack);
+	//
+	/*Another way//ALEXIS 09/01 ACK MESSAGE problem
+	if(msg->getSource() == 1){
+		std::set<Connection*>::iterator it1 = connections1.begin();
+	}
+	else{
+		std::set<Connection*>::iterator it1 = connections1.end();
+	}
+	//*/
 	Connection* cn1 = *it1;
 	ackslice_msg->setTcpConnection(cn1);
 	//ALEXIS
@@ -783,7 +796,12 @@ cerr << "extracted " << (int)kpts.size() << "keypoints\tDetThreshold=" << datc_p
 
 	DataATCMsg *atc_msg = new DataATCMsg(frame_id, 0, 1, detTime, descTime, kencTime, fencTime, 0, features.rows, kpts.size(), ft_bitstream, kp_bitstream);
 	std::set<Connection*> connections = radioSystem_ptr->getWiFiConnections();
-	std::set<Connection*>::iterator it = connections.begin();
+	std::set<Connection*>::iterator it = connections1.begin();
+	//ALEXIS 09/01 ACK MESSAGE problem
+	int atc = msg->getSource();
+	atc--;
+	std::advance(it, atc);
+	//
 	Connection* cn = *it;
 	atc_msg->setTcpConnection(cn);
 	//ALEXIS
