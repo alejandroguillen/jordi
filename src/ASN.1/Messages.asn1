@@ -94,6 +94,9 @@ VSNTestBed DEFINITIONS AUTOMATIC TAGS ::= BEGIN
   	frameID		INTEGER
   }
   
+  AddCameraMessage ::= SEQUENCE {
+	cameraid	INTEGER
+  }
   
   CoopStatus ::= ENUMERATED {
   	online,

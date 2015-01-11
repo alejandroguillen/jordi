@@ -39,6 +39,7 @@ src/RadioSystem/MessageParser.d: ../src/RadioSystem/MessageParser.cpp \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CooperatorInfo.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CoopStatus.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/Header.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/Message.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/StartCTAMsg.h \
@@ -48,7 +49,8 @@ src/RadioSystem/MessageParser.d: ../src/RadioSystem/MessageParser.cpp \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/DataCTAMsg.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/CoopInfoMsg.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/StopMsg.h \
- /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/ACKsliceMsg.h
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/ACKsliceMsg.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/AddCameraMsg.h
 
 ../src/RadioSystem/MessageParser.h:
 
@@ -130,6 +132,8 @@ src/RadioSystem/MessageParser.d: ../src/RadioSystem/MessageParser.cpp \
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h:
 
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h:
+
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/Header.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/Message.h:
@@ -149,3 +153,5 @@ src/RadioSystem/MessageParser.d: ../src/RadioSystem/MessageParser.cpp \
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/StopMsg.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/ACKsliceMsg.h:
+
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/AddCameraMsg.h:

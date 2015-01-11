@@ -70,7 +70,15 @@ int RadioSystem::startTelosbReceiver(string dev_name, string node_id){
 	if(telosbRadioSystem_ptr->openRadio(dev_name.c_str(),115200,0)==0){
 		telosbRadioSystem_ptr->startReceiver();
 		cout << "RS: telosb ready!" << endl;
-		cout << "RS: camera " << telosbRadioSystem_ptr->getNodeID() << endl;
+		int NodeID = telosbRadioSystem_ptr->getNodeID(); //ALEXIS 11/01
+		cout << "RS: camera " << NodeID << " activated" << endl; //ALEXIS 11/01
+		//ALEXIS 11/01 ADD CAMERA MESSAGE
+		if(NodeID != 0){
+			nodeManager_ptr->AddCameraMessage(NodeID);
+			cout << "" << endl;
+			cout << "Camera " << NodeID << " ready to receive from sink" << endl;
+		}
+		//
 		return 0;
 	}
 	cout << "RS: Error in opening radio device" << endl;

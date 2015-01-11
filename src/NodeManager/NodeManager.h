@@ -87,6 +87,7 @@ public:
 	void notifyOffloadingCompleted(vector<KeyPoint>& kpts,Mat& features, double detTime, double descTime);
 	//void sendTestPacket(Message* msg);
 	int node_id; //ALEXIS
+	void AddCameraMessage(int cameraid); //ALEXIS 11/01 ADD CAMERA MESSAGE
 private:
 	SystemState cur_state;
 	NodeType node_type;

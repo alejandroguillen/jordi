@@ -52,6 +52,7 @@ src/Tasks/Tasks.d: ../src/Tasks/Tasks.cpp ../src/Tasks/Tasks.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CooperatorInfo.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CoopStatus.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/Telosb/TelosbRadioSystem.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/Telosb/serialsource.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/StartCTAMsg.h \
@@ -195,6 +196,8 @@ src/Tasks/Tasks.d: ../src/Tasks/Tasks.cpp ../src/Tasks/Tasks.h \
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CoopStatus.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h:
+
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/Telosb/TelosbRadioSystem.h:
 

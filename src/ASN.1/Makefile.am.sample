@@ -6,6 +6,7 @@ ASN_MODULE_SOURCES=	\
 	StartATCMessage.c	\
 	StartDATCMessage.c	\
 	ACKsliceMessage.c	\
+	AddCameraMessage.c	\
 	CoopStatus.c	\
 	CodingChoices.c	\
 	OffloadingChoices.c	\
@@ -21,6 +22,7 @@ ASN_MODULE_HEADERS=	\
 	StartATCMessage.h	\
 	StartDATCMessage.h	\
 	ACKsliceMessage.h	\
+	AddCameraMessage.h	\
 	CoopStatus.h	\
 	CodingChoices.h	\
 	OffloadingChoices.h	\
@@ -108,5 +110,5 @@ clean:
 regen: regenerate-from-asn1-source
 
 regenerate-from-asn1-source:
-	asn1c -fnative-types -gen-PER Messages.asn1
+	asn1c Messages.asn1
 

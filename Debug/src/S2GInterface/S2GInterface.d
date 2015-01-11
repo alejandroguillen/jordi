@@ -40,6 +40,7 @@ src/S2GInterface/S2GInterface.d: ../src/S2GInterface/S2GInterface.cpp \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CooperatorInfo.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CoopStatus.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/NodeManager/NodeManager.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/RadioSystem.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/Message.h \
@@ -159,6 +160,8 @@ src/S2GInterface/S2GInterface.d: ../src/S2GInterface/S2GInterface.cpp \
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CoopStatus.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h:
+
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/NodeManager/NodeManager.h:
 

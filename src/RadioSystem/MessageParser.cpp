@@ -15,6 +15,7 @@
 #include "Messages/StopMsg.h"
 #include "Messages/Header.h"
 #include "Messages/ACKsliceMsg.h"
+#include "Messages/AddCameraMsg.h"
 
 Header* MessageParser::parseHeader(uchar* bitstream){
 	vector<unsigned char> vec;
@@ -304,7 +305,42 @@ Message* MessageParser::parseMessage(Header* h, uchar* bitstream, Connection* cn
 
 		break;
 	}
+	//ALEXIS 11/01 ADD CAMERA MESSAGE
+	case ADD_CAMERA_MESSAGE:{
 
+		cout << "Message is ADD_CAMERA" << endl;
+
+		char buf[MAX_ADD_CAMERA_MESSAGE_SIZE];
+
+		int bitstream_size =  h->getPayloadSize();
+		cout << "Bitstream size is " << bitstream_size << endl;
+
+		//copy the bitstream (MAYBE REMOVED)
+		for(int i=0;i<bitstream_size;i++){
+			buf[i] = bitstream[i];
+		}
+
+		AddCameraMessage_t* internal_message = (AddCameraMessage_t*) calloc(1, sizeof(*internal_message));
+		asn_dec_rval_t rval;
+		rval = uper_decode_complete(0, &asn_DEF_AddCameraMessage,(void **)&internal_message, buf, MAX_ADD_CAMERA_MESSAGE_SIZE);
+		msg = new AddCameraMsg(internal_message);
+		msg->setSource(h->getSrcAddr());
+		msg->setDestination(h->getDstAddr());
+		msg->setTcpConnection(cn);
+
+		if(rval.code != RC_OK) {
+			fprintf(stderr,
+					"Broken message encoding at byte %ld\n",
+					(long)rval.consumed);
+			//exit(65); /* better, EX_DATAERR */
+			msg = NULL;
+		} else {
+			//fprintf(stdout,"Printing msg as XML...\n");
+			//xer_fprint(stdout, &asn_DEF_CooperatorInfo, internal_message);
+		}
+		break;
+	}
+	//
 	default:
 	{
 		break;

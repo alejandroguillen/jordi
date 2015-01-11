@@ -40,6 +40,7 @@ src/NodeManager/NodeManager.d: ../src/NodeManager/NodeManager.cpp \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CooperatorInfo.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CoopStatus.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/Telosb/serialsource.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/TaskManager/TaskManager.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/TaskManager/TaskQueue.h \
@@ -76,6 +77,7 @@ src/NodeManager/NodeManager.d: ../src/NodeManager/NodeManager.cpp \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ALWiFiRadioSystem.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/S2GInterface/S2GInterface.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/ACKsliceMsg.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/AddCameraMsg.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/OffloadingManager.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/LoadBalancing.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/LoadBalancingConfig.h \
@@ -171,6 +173,8 @@ src/NodeManager/NodeManager.d: ../src/NodeManager/NodeManager.cpp \
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h:
 
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h:
+
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/Telosb/serialsource.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/TaskManager/TaskManager.h:
@@ -242,6 +246,8 @@ src/NodeManager/NodeManager.d: ../src/NodeManager/NodeManager.cpp \
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/S2GInterface/S2GInterface.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/ACKsliceMsg.h:
+
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/AddCameraMsg.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/OffloadingManager.h:
 

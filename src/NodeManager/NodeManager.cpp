@@ -6,6 +6,7 @@
 #include "Messages/StartDATCMsg.h"
 #include "Messages/CoopInfoMsg.h"
 #include "Messages/ACKsliceMsg.h"
+#include "Messages/AddCameraMsg.h"
 #include "RadioSystem/OffloadingManager.h"
 
 using namespace std;
@@ -307,10 +308,25 @@ void NodeManager::notify_msg(Message *msg){
 		}
 		break;
 	}
-	default:
+
+	//ALEXIS 11/01 ADD CAMERA MESSAGE
+	case ADD_CAMERA_MESSAGE:
+	{
+		switch(node_type){
+		case SINK:{
+			s2gInterface_ptr->writeMsg(msg);
+			break;
+		}
+		}
 		break;
 	}
+	//
 
+	default:
+	
+		break;
+		
+	}
 }
 
 
@@ -705,7 +721,7 @@ void NodeManager::DATC_processing_thread_cooperator(DataCTAMsg* msg){
 	//ALEXIS 09/01 ACK MESSAGE problem
 	int ack = msg->getSource();
 	ack--;
-	std::advance(it1, ack);
+	std::advance(it1, ack); //if Camera1 off -> error Camera2
 	//
 	/*Another way//ALEXIS 09/01 ACK MESSAGE problem
 	if(msg->getSource() == 1){
@@ -981,3 +997,17 @@ void NodeManager::notifyOffloadingCompleted(vector<KeyPoint>& kpts,Mat& features
 	}
 	cur_state = IDLE;
 }
+//ALEXIS 11/01 ADD CAMERA MESSAGE
+void NodeManager::AddCameraMessage(int cameraid){
+	//offloading_manager->addCooperator(cn);
+	//std::string ip_addr = cn->socket().remote_endpoint().address().to_string();
+	//int port = cn->socket().remote_endpoint().port();
+	AddCameraMsg *msg = new AddCameraMsg(cameraid);
+	
+	//ALEXIS 11/12
+	msg->setSource(node_id);
+	msg->setDestination(0);
+	//
+	sendMessage(msg);
+}
+//

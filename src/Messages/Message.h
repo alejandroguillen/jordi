@@ -14,6 +14,7 @@
 #include "ASN.1/DataATCMessage.h"
 #include "ASN.1/CooperatorInfo.h"
 #include "ASN.1/ACKsliceMessage.h"
+#include "ASN.1/AddCameraMessage.h"
 #include <boost/asio.hpp>
 
 
@@ -27,6 +28,7 @@ using boost::asio::ip::tcp;
 #define MAX_DATA_CTA_MESSAGE_SIZE 1024000 //1MB... a LOT!!
 #define MAX_DATA_ATC_MESSAGE_SIZE 1024000
 #define MAX_ACK_SLICE_MESSAGE_SIZE 1024
+#define MAX_ADD_CAMERA_MESSAGE_SIZE 1024
 
 enum MessageType{
 	START_CTA_MESSAGE,
@@ -36,7 +38,8 @@ enum MessageType{
 	DATA_ATC_MESSAGE,
 	STOP_MESSAGE,
 	COOP_INFO_MESSAGE,
-	ACK_SLICE_MESSAGE
+	ACK_SLICE_MESSAGE,
+	ADD_CAMERA_MESSAGE
 };
 
 class Connection;

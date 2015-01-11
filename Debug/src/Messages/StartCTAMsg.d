@@ -37,7 +37,8 @@ src/Messages/StartCTAMsg.d: ../src/Messages/StartCTAMsg.cpp \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/DataATCMessage.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CooperatorInfo.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CoopStatus.h \
- /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h
 
 ../src/Messages/StartCTAMsg.h:
 
@@ -118,3 +119,5 @@ src/Messages/StartCTAMsg.d: ../src/Messages/StartCTAMsg.cpp \
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/CoopStatus.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/ACKsliceMessage.h:
+
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/ASN.1/AddCameraMessage.h:
