@@ -719,9 +719,12 @@ void NodeManager::DATC_processing_thread_cooperator(DataCTAMsg* msg){
 	std::set<Connection*> connections1 = radioSystem_ptr->getWiFiConnections();
 	std::set<Connection*>::iterator it1 = connections1.begin();
 	//ALEXIS 09/01 ACK MESSAGE problem
-	int ack = msg->getSource();
-	ack--;
-	std::advance(it1, ack); //if Camera1 off -> error Camera2
+	int tmp = connections1.size();
+	if(tmp > 1){   //if because Camera1 off -> error Camera2
+		int ack = msg->getSource();
+		ack--;
+		std::advance(it1, ack);
+	}
 	//
 	/*Another way//ALEXIS 09/01 ACK MESSAGE problem
 	if(msg->getSource() == 1){
@@ -814,9 +817,12 @@ cerr << "extracted " << (int)kpts.size() << "keypoints\tDetThreshold=" << datc_p
 	std::set<Connection*> connections = radioSystem_ptr->getWiFiConnections();
 	std::set<Connection*>::iterator it = connections1.begin();
 	//ALEXIS 09/01 ACK MESSAGE problem
-	int atc = msg->getSource();
-	atc--;
-	std::advance(it, atc);
+	int tmp1 = connections1.size();
+	if(tmp1 > 1){   //if because Camera1 off -> error Camera2
+		int ack = msg->getSource();
+		ack--;
+		std::advance(it1, ack);
+	}
 	//
 	Connection* cn = *it;
 	atc_msg->setTcpConnection(cn);
