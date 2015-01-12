@@ -8,6 +8,7 @@
 #include "ALWiFiRadioSystem.h"
 #include <boost/bind.hpp>
 #include "NodeManager/NodeManager.h"
+#include "alexis.h"
 
 
 ALWiFiRadioSystem::ALWiFiRadioSystem(tcp::resolver::query query, tcp::resolver::query query2, std::string mode, NodeManager* nm) :
@@ -20,13 +21,16 @@ new_connection2(new Connection(io_service,
 		connection_manager)),
 node_manager(nm)
 {
-	new_connection->setNodeManager(node_manager);
+	alexis *alexis1;
+	alexis1 = new alexis(acceptor,query,nm);
+	/*new_connection->setNodeManager(node_manager);
 	new_connection2->setNodeManager(node_manager);
 	tcp::resolver resolver(io_service);
 	tcp::endpoint endpoint = *resolver.resolve(query);
 	tcp::endpoint endpoint2 = *resolver.resolve(query2);
 	tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
 	tcp::resolver::iterator endpoint_iterator2 = resolver.resolve(query2);
+
 
 
 	std::cout << "connecting to Camera 1..." << std::endl;
@@ -37,7 +41,7 @@ node_manager(nm)
 	boost::asio::async_connect(new_connection2->socket(), endpoint_iterator2,
 			boost::bind(&ALWiFiRadioSystem::handleConnect, this,
 					boost::asio::placeholders::error, endpoint_iterator2, new_connection2));
-					
+	*/
 
 }
 void ALWiFiRadioSystem::startReceiver(){
@@ -89,4 +93,21 @@ void ALWiFiRadioSystem::handleAccept(const boost::system::error_code& e){
 
 std::set<Connection*> ALWiFiRadioSystem::getWiFiConnections(){
 	return connection_manager.getWiFiConnections();
+}
+void ALWiFiRadioSystem::TcpPortListener (boost::asio::io_service &io_service, 
+                             boost::asio::ip::tcp::acceptor &a, 
+                             boost::asio::ip::tcp::endpoint &lep, 
+                             SocketObject *readSocketObject)
+{
+    boost::asio::ip::tcp::acceptor *b = &a;
+    boost::asio::io_service *s = &io_service;
+    . . .
+    boost::asio::ip::tcp::socket *sock (new boost::asio::ip::tcp::socket (io_service));
+	
+	std::cout << "connecting to Camera 1..." << std::endl;
+	boost::asio::async_connect(new_connection->socket(), endpoint_iterator,
+			boost::bind(&alexis::handleConnect, this,
+					boost::asio::placeholders::error, endpoint_iterator, new_connection));
+	
+    a.async_accept (*sock, boost::bind (&alexis::HandleRemoteAccept, this, s, b, sock, lep, boost::asio::placeholders::error));
 }

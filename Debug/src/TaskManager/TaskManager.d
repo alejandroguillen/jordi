@@ -74,6 +74,7 @@ src/TaskManager/TaskManager.d: ../src/TaskManager/TaskManager.cpp \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/Connection.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/Header.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ALWiFiRadioSystem.h \
+ /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/alexis.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/NodeManager/NodeManager.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/S2GInterface/S2GInterface.h \
  /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/TaskManager/TaskQueue.h
@@ -227,6 +228,8 @@ src/TaskManager/TaskManager.d: ../src/TaskManager/TaskManager.cpp \
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/Messages/Header.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/ALWiFiRadioSystem.h:
+
+/home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/RadioSystem/WiFi/alexis.h:
 
 /home/alexis/Dropbox/THESIS/Testbed_code/workspace/jordi/src/NodeManager/NodeManager.h:
 

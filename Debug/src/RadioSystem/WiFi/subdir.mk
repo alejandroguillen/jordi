@@ -7,19 +7,22 @@ CPP_SRCS += \
 ../src/RadioSystem/WiFi/ALWiFiRadioSystem.cpp \
 ../src/RadioSystem/WiFi/Connection.cpp \
 ../src/RadioSystem/WiFi/ConnectionManager.cpp \
-../src/RadioSystem/WiFi/WiFiRadioSystem.cpp 
+../src/RadioSystem/WiFi/WiFiRadioSystem.cpp \
+../src/RadioSystem/WiFi/alexis.cpp 
 
 OBJS += \
 ./src/RadioSystem/WiFi/ALWiFiRadioSystem.o \
 ./src/RadioSystem/WiFi/Connection.o \
 ./src/RadioSystem/WiFi/ConnectionManager.o \
-./src/RadioSystem/WiFi/WiFiRadioSystem.o 
+./src/RadioSystem/WiFi/WiFiRadioSystem.o \
+./src/RadioSystem/WiFi/alexis.o 
 
 CPP_DEPS += \
 ./src/RadioSystem/WiFi/ALWiFiRadioSystem.d \
 ./src/RadioSystem/WiFi/Connection.d \
 ./src/RadioSystem/WiFi/ConnectionManager.d \
-./src/RadioSystem/WiFi/WiFiRadioSystem.d 
+./src/RadioSystem/WiFi/WiFiRadioSystem.d \
+./src/RadioSystem/WiFi/alexis.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
